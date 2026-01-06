@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: darkgreen;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    width: 475px;
+    height: 490px;
+}
+
+hr {
+    width: 50vw;
+    background-color: white;
+    color: white;
+}
+
+#header {
+    font-size: 36px;
+    color: white;
+    font-weight: bold;
+    word-spacing: 2px;
+}
+
+.tile {
+    /*Box*/
+    border:2px solid white;
+    width: 60px;
+    height: 60px;
+    margin: 2.5px;
+
+    /*Text*/
+    color:white;
+    font-size: 36px;
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+}
+
+.correct { 
+    background-color: #6AAA64;
+    color:white;
+    border-color: white;
+}
+
+.present {
+   background-color: #C9B458;
+   color:white;
+   border-color: white; 
+}
+
+.absent {
+    background-color: #787C7E;
+    color: white;
+    border-color: white;
+}
+
+#keyboard {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    width: 400px;
+    height: 230px;
+}
+
+.keycap {
+    margin: 2.5px;
+    height:50px;
+    width: 50px;
+    background-color:lightyellow;
+    color:black;
+    border: solid 2px black;
+    display: grid;
+    grid-template-columns: 1fr  3fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+
+}
+
+.keyLetter {
+    font-size: 20px; /* NOTE: font value is set for keyboard */
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    padding: 0px;
+    margin: 0px;
+}
+
+.keyNum {
+    font-size: 10px; /* NOTE: font value is set for keyboard */
+    font-weight: bold;
+    grid-column-start: -2;
+    grid-column-end: -1;
+    grid-row-start: -2;
+    grid-row-end: -1;
+    padding:0px;
+    margin: 0px;
+}
