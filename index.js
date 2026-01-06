@@ -30,7 +30,7 @@ gameInit = () => {
 
     for (let i=0;i<4;i++) {
         for (let j=0;j<7;j++) {
-            let keycap = document.createElement('span');
+            let keycap = document.createElement('button');
             keycap.className = 'keycap';
             let currAlphabetNo = i*7 + j
             if (currAlphabetNo <= 25) {
