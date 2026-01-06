@@ -102,3 +102,25 @@ hr {
     padding:0px;
     margin: 0px;
 }
+
+#inputKeys {
+    height: 30px;
+    width: 200px;
+    display: flex;
+    gap:5vw;
+}
+
+#inputKeys > button {
+    font-family: 'Courier New', Courier, monospace;
+    border: 2px solid darkgray;
+    background-color: lightgray;
+    color: black;
+    font-weight: bold;
+}
+
+#inputKeys > button:hover {
+    font-family: 'Courier New', Courier, monospace;
+    border: 2px solid darkgreen;
+    background-color: black;
+    color: white;
+}

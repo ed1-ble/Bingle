@@ -20,6 +20,7 @@ window.onload = function(){
 gameInit = () => {
 
     let keyboardDiv = document.getElementById('keyboard');
+    
 
     for (let r=0;r<height;r++){
         for (let c=0;c<width;c++){
@@ -32,7 +33,12 @@ gameInit = () => {
     }
 
     for (let i=0;i<4;i++) {
-        for (let j=0;j<7;j++) {
+        let n = 7; // Sorry i didnt want to think much for this,//
+                   // n is the no. of keys per row //
+        if (i==3) {
+            n -= 2;
+        }
+        for (let j=0;j<n;j++) {
             let keycap = document.createElement('button');
             keycap.className = 'keycap';
             let currAlphabetNo = i*7 + j
@@ -59,8 +65,19 @@ gameInit = () => {
 
     keyboardDiv.addEventListener('click',(event)=>{
         let keyPressed = event.target.closest('button').getElementsByClassName('keyLetter')[0].innerText;
-        keyPressed = 'Key' + keyPressed;
-        onAdd(keyPressed);
+        if (keyPressed) {
+            keyPressed = 'Key' + keyPressed;
+            onAdd(keyPressed);
+        }
+    })
+
+    let enterKey = document.getElementById('enterKey');
+    enterKey.addEventListener('click',()=>{
+        onAdd('Enter');
+    })
+    let backspaceKey = document.getElementById('backspaceKey');
+    backspaceKey.addEventListener('click',()=>{
+        onAdd('Backspace');
     })
 }
 
