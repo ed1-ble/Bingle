@@ -18,6 +18,9 @@ window.onload = function(){
 }
 
 gameInit = () => {
+
+    let keyboardDiv = document.getElementById('keyboard');
+
     for (let r=0;r<height;r++){
         for (let c=0;c<width;c++){
             let tile = document.createElement('span');
@@ -36,7 +39,7 @@ gameInit = () => {
             if (currAlphabetNo <= 25) {
                 let keyLetter = document.createElement('span');
                 keyLetter.className = 'keyLetter';
-                let keyNum = document.createElement('span');
+                let keyNum = document.createElement('div');
                 keyNum.className = 'keyNum';
                 keyNum.innerText = alpha[currAlphabetNo].points;
                 keyLetter.innerText = alpha[currAlphabetNo].letter;
@@ -49,18 +52,16 @@ gameInit = () => {
                 keycap.innerText = 'DEL';
                 keycap.style.backgroundColor = 'red';
             }
-            document.getElementById('keyboard').append(keycap)
-            keycap.addEventListener('click',()=>{
-                let keycode = 'Key'+keycap.innerText;
-                if (keycap.innerText === 'DEL') { // Insert the BACKSPACE key name //
-                    keycode = 'Backspace';
-                } else if (keycap.innerText === '>') { // Insert the ENTER key name //
-                    keycode = 'Enter';
-                }
-                onAdd(keycode);
-            })
+            keyboardDiv.append(keycap);
+            
         }
     }
+
+    keyboardDiv.addEventListener('click',(event)=>{
+        let keyPressed = event.target.closest('button').getElementsByClassName('keyLetter')[0].innerText;
+        keyPressed = 'Key' + keyPressed;
+        onAdd(keyPressed);
+    })
 }
 
 let getTile = (r,c) => {
