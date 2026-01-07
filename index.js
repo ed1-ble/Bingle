@@ -9,9 +9,29 @@ let gameEnd = false;
 let row = 0;    // CURRENT ROW AND COL //
 let col = 0;
 
-const scrabPTS = { 'A': 1, 'B': 3, 'C': 3, 'D': 2, 'E': 1, 'F': 4, 'G': 2, 'H': 4, 'I': 1, 'J': 8, 'K': 5, 'L': 1, 'M': 3, 'N': 1, 'O': 1, 'P': 3, 'Q': 10, 'R': 1, 'S': 1, 'T': 1, 'U': 1, 'V': 4, 'W': 4, 'X': 8, 'Y': 4, 'Z': 10 };
+const scrabPTS = {
+  'Q': 10, 'W': 4, 'E': 1, 'R': 1, 'T': 1, 'Y': 4, 'U': 1, 'I': 1, 'O': 1, 'P': 3,
+  'A': 1, 'S': 1, 'D': 2, 'F': 4, 'G': 2, 'H': 4, 'J': 8, 'K': 5, 'L': 1,
+  'Z': 10, 'X': 8, 'C': 3, 'V': 4, 'B': 3, 'N': 1, 'M': 3
+};
+
 
 const alpha = Object.entries(scrabPTS).map(([letter, points]) => { return { letter, points }; });
+
+// Calculate total score hint //
+let totalScore = 0;
+for (let i=0;i<width;i++) {
+    let bonus = 1;
+    switch (bonusSq[i]){
+        case 'D':
+            bonus = 2;
+            break;
+        case 'T':
+            bonus = 3;
+            break;
+    }
+    totalScore += scrabPTS[word[i]]*bonus;
+}
 
 window.onload = function(){
     gameInit();
@@ -20,7 +40,9 @@ window.onload = function(){
 gameInit = () => {
 
     let keyboardDiv = document.getElementById('keyboard');
-    
+
+    let header = document.getElementById('header');
+    header.innerText = 'Sum: ' + totalScore.toString();
 
     for (let r=0;r<height;r++){
         for (let c=0;c<width;c++){
@@ -28,6 +50,15 @@ gameInit = () => {
             tile.id = r.toString() + '-' + c.toString()
             tile.className = 'tile';
             tile.innerText = '';
+            // Assign bonus Squares //
+            if (bonusSq[c] === 'D') {
+                tile.classList.add('doubleLetter');
+                tile.innerText = 'Double Letter';
+            } else if (bonusSq[c] === 'T') {
+                tile.classList.add('tripleLetter');
+                tile.innerText = 'Triple Letter';
+            }
+
             document.getElementById('board').appendChild(tile);
         }
     }
@@ -90,12 +121,30 @@ let addWord = (letter) => {
     tile = getTile(row,col);
     let keyNum = document.createElement('span');
     let keyLetter = document.createElement('span');
+
     keyLetter.innerText = letter;
     keyLetter.className = 'keyLetter';
-    keyLetter.style.fontSize = 'min(30px,4.5vw)';
+    keyLetter.style.fontSize = 'min(25px,4.5vw)';
+
     keyNum.className = 'keyNum';
     keyNum.innerText = scrabPTS[letter].toString();
     keyNum.style.fontSize = 'min(10px,2.5vw)';
+
+    // Modification for Bonus Squares //
+    if (bonusSq[col] === 'D') {
+        tile.classList.replace('doubleLetter',null);
+        tile.innerText = '';
+        keyNum.style.color = 'lightskyblue';
+        keyLetter.style.color = 'lightskyblue';
+        keyNum.innerText = (Number(keyNum.innerText) * 2).toString();
+    } else if (bonusSq[col] === 'T') {
+        tile.classList.replace('tripleLetter',null);
+        tile.innerText = '';
+        keyNum.style.color = 'lightcoral';
+        keyLetter.style.color = 'lightcoral';
+        keyNum.innerText = (Number(keyNum.innerText) * 3).toString();
+    }
+
     tile.appendChild(keyLetter);
     tile.appendChild(keyNum);
 }
@@ -103,6 +152,17 @@ let addWord = (letter) => {
 let rmWord = () => {
     tile = getTile(row,col);
     tile.innerText = '';
+
+    // Modification for Bonus Squares //
+    if (bonusSq[col] === 'D') {
+        tile.classList.add('doubleLetter');
+        tile.innerText = 'Double Letter';
+
+    } else if (bonusSq[col] === 'T') {
+        tile.classList.add('tripleLetter');
+        tile.innerText = 'Triple Letter';
+    }
+
 }
 
 let checkWord = () => {
@@ -148,9 +208,7 @@ document.addEventListener('keyup',(event)=>{
 onAdd = (keyCode) => {
     if (gameEnd) return;
     
-    if (row == height && !gameEnd) {
-        gameEnd = true;
-    }
+    
 
     if ("KeyA" <= keyCode && "KeyZ" >= keyCode) {
         if (col < width) {
@@ -164,10 +222,16 @@ onAdd = (keyCode) => {
             switch (status){
                 case 'Win':
                     gameEnd = true;
-                    return;
+                    break;
                 case 'Cont':
                     col = 0
                     row += 1 
+                    if (row == height && !gameEnd) {
+                        gameEnd = true;
+                        alert('The answer was '+word+', better luck next time!');
+                        return;
+                    }
+                    break;
             }
             
         } else (
@@ -180,3 +244,7 @@ onAdd = (keyCode) => {
         }
     }
 }
+
+document.addEventListener("dblclick", function (event) {
+    event.preventDefault();
+}, { passive: false });
