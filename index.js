@@ -37,6 +37,21 @@ window.onload = function(){
     gameInit();
 }
 
+let addAlphaKey = (currAlphabetNo,keycap) =>{
+    let keyLetter = document.createElement('span');
+    keyLetter.className = 'keyLetter';
+    let keyNum = document.createElement('div');
+    keyNum.className = 'keyNum';
+    keyNum.innerText = alpha[currAlphabetNo].points;
+    keyLetter.innerText = alpha[currAlphabetNo].letter;
+    keycap.appendChild(keyLetter);
+    keycap.appendChild(keyNum);
+}
+
+let addInputKey = (text,keycap) =>{
+
+}
+
 gameInit = () => {
 
     let keyboardDiv = document.getElementById('keyboard');
@@ -66,34 +81,27 @@ gameInit = () => {
     }
 
     // Initialize the Keyboard //
+    let currAlphabetNo = 0;
+    for (let i=1;i<4;i++) {
+        let n = 10;
 
-    for (let i=0;i<4;i++) {
-        let n = 7; // Sorry i didnt want to think much for this,//
-                   // n is the no. of keys per row //
-        if (i==3) {
-            n -= 2;
+        if (i == 2) {
+            n = 9;
+        } else if (i==3) {
+            n=7;
         }
+
+        let currKeyboardRowName = 'kbrow'+i.toString();
+        let currKeyboardRow = document.getElementById(currKeyboardRowName);
         for (let j=0;j<n;j++) {
             let keycap = document.createElement('button');
             keycap.className = 'keycap';
-            let currAlphabetNo = i*7 + j
+            
             if (currAlphabetNo <= 25) {
-                let keyLetter = document.createElement('span');
-                keyLetter.className = 'keyLetter';
-                let keyNum = document.createElement('div');
-                keyNum.className = 'keyNum';
-                keyNum.innerText = alpha[currAlphabetNo].points;
-                keyLetter.innerText = alpha[currAlphabetNo].letter;
-                keycap.appendChild(keyLetter);
-                keycap.appendChild(keyNum);
-            } else if (currAlphabetNo == 27){
-                keycap.innerText = '>';
-                keycap.style.backgroundColor = 'blue';
-            } else {
-                keycap.innerText = 'DEL';
-                keycap.style.backgroundColor = 'red';
+                addAlphaKey(currAlphabetNo,keycap);
+                currAlphabetNo += 1;
             }
-            keyboardDiv.append(keycap);
+            currKeyboardRow.append(keycap);
             
         }
     }
