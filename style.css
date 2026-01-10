@@ -7,6 +7,7 @@ body {
     gap: 10px;
     background-color: darkgreen;
     box-sizing: border-box;
+    user-select: none;
 }
 
 #board {
@@ -112,28 +113,6 @@ hr {
     grid-column-end: -1;
     grid-row-start: -2;
     grid-row-end: -1;
-}
-
-#inputKeys {
-    height: min(8vw,30px);
-    display: flex;
-    gap:15vw;
-    font-size: clamp(16px,5vw,32px);
-}
-
-#inputKeys > button {
-    font-family: 'Courier New', Courier, monospace;
-    border: .1vw solid darkgray;
-    background-color: lightgray;
-    color: black;
-    font-weight: bold;
-}
-
-#inputKeys > button:hover {
-    font-family: 'Courier New', Courier, monospace;
-    border: .1vw solid darkgreen;
-    background-color: black;
-    color: white;
 }
 
 .disable-dbl-tap-zoom {

@@ -37,15 +37,29 @@ window.onload = function(){
     gameInit();
 }
 
-let addAlphaKey = (currAlphabetNo,keycap) =>{
+let addAlphaKey = (keyName,keycap) =>{
     let keyLetter = document.createElement('span');
     keyLetter.className = 'keyLetter';
+    keyLetter.innerText = keyName;
     let keyNum = document.createElement('div');
     keyNum.className = 'keyNum';
-    keyNum.innerText = alpha[currAlphabetNo].points;
-    keyLetter.innerText = alpha[currAlphabetNo].letter;
-    keycap.appendChild(keyLetter);
     keycap.appendChild(keyNum);
+    keyNum.innerText = scrabPTS[keyName];
+    keycap.appendChild(keyLetter);
+}
+
+const backspaceKeyChar = '⌫';
+const enterKeyChar = '↩';
+
+let addInputKey = (keyName,keycap) => {
+    let keyLetter = document.createElement('span');
+    keyLetter.className = 'keyLetter';
+    if (keyName === 'Enter') {
+        keyLetter.innerText = enterKeyChar;
+    } else {
+        keyLetter.innerText = backspaceKeyChar;
+    }
+    keycap.appendChild(keyLetter);
 }
 
 let showNotification = (message,duration) => {
@@ -60,8 +74,6 @@ let showNotification = (message,duration) => {
         notification.remove();
     })
 }
-
-
 
 gameInit = () => {
 
@@ -96,10 +108,8 @@ gameInit = () => {
     for (let i=1;i<4;i++) {
         let n = 10;
 
-        if (i == 2) {
+        if (i != 1) {
             n = 9;
-        } else if (i==3) {
-            n=7;
         }
 
         let currKeyboardRowName = 'kbrow'+i.toString();
@@ -108,9 +118,15 @@ gameInit = () => {
             let keycap = document.createElement('button');
             keycap.className = 'keycap';
             
-            if (currAlphabetNo <= 25) {
-                addAlphaKey(currAlphabetNo,keycap);
+            if (j == 0 && i == 3) {
+                // Add Enter Key //
+                addInputKey('Enter',keycap);
+            } else if (currAlphabetNo <= 25) {
+                addAlphaKey(alpha[currAlphabetNo].letter,keycap);
                 currAlphabetNo += 1;
+            } else {
+                // Add Backspace Key //
+                addInputKey('Backspace',keycap);
             }
             currKeyboardRow.append(keycap);
             
@@ -120,21 +136,17 @@ gameInit = () => {
     keyboardDiv.addEventListener('click',(event)=>{
         let keyPressed = event.target.closest('button').getElementsByClassName('keyLetter')[0].innerText;
         if (keyPressed) {
-            keyPressed = 'Key' + keyPressed;
+            if (keyPressed === backspaceKeyChar) {
+                keyPressed = 'Backspace';
+            } else if (keyPressed === enterKeyChar) {
+                keyPressed = 'Enter';
+            } else {
+                keyPressed = 'Key' + keyPressed;
+            }
             onAdd(keyPressed);
         }
     })  
 
-    // Initialize input keys //
-
-    let enterKey = document.getElementById('enterKey');
-    enterKey.addEventListener('click',()=>{
-        onAdd('Enter');
-    })
-    let backspaceKey = document.getElementById('backspaceKey');
-    backspaceKey.addEventListener('click',()=>{
-        onAdd('Backspace');
-    })
 }
 
 let getTile = (r,c) => {
