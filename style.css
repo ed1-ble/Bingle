@@ -4,10 +4,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
     background-color: darkgreen;
     box-sizing: border-box;
     user-select: none;
+    margin:0px;
+    gap:10px;
 }
 
 #board {
@@ -27,7 +28,7 @@ hr {
 }
 
 #header {
-    font-size: clamp(20px,5vw,36px);
+    font-size: min(6vw,30px);
     color: white;
     font-weight: bold;
     word-spacing: 2px;
@@ -80,7 +81,7 @@ hr {
 }
 
 .keycap {
-    aspect-ratio: .8 / 1;
+    aspect-ratio: .65 / 1;
     border-radius: 10%;
     background-color:#f5deb3;
     color:black;
@@ -173,3 +174,11 @@ hr {
     padding: clamp(12px, 2vw, 20px);
     animation: notificationFade 1.5s ease-in-out forwards;
 }
+
+#topbar {
+    width: 100%; 
+    height: clamp(20px, 5vh, 70px);
+    background-color: green;
+    flex-shrink: 0;
+}
+

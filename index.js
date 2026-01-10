@@ -62,6 +62,10 @@ let addInputKey = (keyName,keycap) => {
     keycap.appendChild(keyLetter);
 }
 
+let showInnerWindow = (innerhtml) =>{
+    
+}
+
 let showNotification = (message,duration) => {
     let notification = document.createElement('span');
     notification.className = 'notification';
