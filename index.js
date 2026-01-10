@@ -48,9 +48,20 @@ let addAlphaKey = (currAlphabetNo,keycap) =>{
     keycap.appendChild(keyNum);
 }
 
-let addInputKey = (text,keycap) =>{
+let showNotification = (message,duration) => {
+    let notification = document.createElement('span');
+    notification.className = 'notification';
+    notification.innerText = message;
+    notification.style.animationDuration = duration.toString() + 's';
+    const notificationBox = document.getElementById('notificationBox');
+    notificationBox.append(notification);
 
+    notification.addEventListener('animationend',()=>{
+        notification.remove();
+    })
 }
+
+
 
 gameInit = () => {
 
@@ -242,14 +253,14 @@ onAdd = (keyCode) => {
                     row += 1 
                     if (row == height && !gameEnd) {
                         gameEnd = true;
-                        alert('The answer was '+word+', better luck next time!');
+                        showNotification(word, 15);
                         return;
                     }
                     break;
             }
             
         } else (
-            alert('Not enough letters!')
+            showNotification('Not enough letters!',1.5)
         )
     } else if (keyCode === 'Backspace') {
         if (col > 0) {

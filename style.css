@@ -6,6 +6,7 @@ body {
     align-items: center;
     gap: 10px;
     background-color: darkgreen;
+    box-sizing: border-box;
 }
 
 #board {
@@ -15,6 +16,7 @@ body {
     width: min(400px,80vw);
     gap:4px;
     margin: auto;
+    position: relative;
 }
 
 hr {
@@ -167,3 +169,28 @@ hr {
     grid-template-columns: 1fr repeat(7,1fr) 1fr;
 }
 
+#notificationBox {
+    position: absolute;
+    right:50%;
+    top:-5%;
+    transform: translate(50%,-0%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap:min(10px,1vh);
+}
+
+@keyframes notificationFade {
+    0% { opacity: 1 }
+    100% { opacity: 0; }
+}
+
+.notification {
+    background-color: white;
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(8px,1.5vw,15px);
+    width: clamp(100px, 20vw, 200px); 
+    padding: clamp(12px, 2vw, 20px);
+    animation: notificationFade 1.5s ease-in-out forwards;
+}
