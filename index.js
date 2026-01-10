@@ -49,7 +49,7 @@ let addAlphaKey = (keyName,keycap) =>{
 }
 
 const backspaceKeyChar = '⌫';
-const enterKeyChar = '↩';
+const enterKeyChar = '⏎';
 
 let addInputKey = (keyName,keycap) => {
     let keyLetter = document.createElement('span');
