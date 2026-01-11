@@ -136,6 +136,7 @@ let initTutorialWindow = (innerhtml) =>{
 
     cancelButton.addEventListener('click',()=>{
         innerWindow.style.opacity = 0;
+        innerWindow.style.pointerEvents = 'none';
     })
 
     // Append TUTORIAL EXAMPLES, format: split by '-' //
@@ -261,6 +262,7 @@ gameInit = () => {
     let tutorialButton = document.getElementById('tutorialButton');
     tutorialButton.addEventListener('click',()=>{
        tutorialWindow.style.opacity = 1;
+       tutorialWindow.style.pointerEvents = 'auto';
     })
 }
 
