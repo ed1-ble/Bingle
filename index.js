@@ -62,8 +62,104 @@ let addInputKey = (keyName,keycap) => {
     keycap.appendChild(keyLetter);
 }
 
+let addExampleTile = (text,parent,type) =>{
+    let tile = document.createElement('span');
+    tile.className = 'tile';
+    tile.innerText = text;
+    tile.style.fontSize = 'clamp(15px,5vw,25px)';
+    tile.style.height = 'clamp(18px,8vw,36px)';
+    tile.style.width = 'clamp(18px,8vw,36px)';
+    tile.style.display = 'flex';
+    tile.style.alignItems = 'center';
+    tile.style.justifyContent = 'center';
+
+    switch (type) {
+        case "correct":
+            tile.classList.add('correct');
+            break;
+        case "absent":
+            tile.classList.add('absent');
+            break;
+        case "present":
+            tile.classList.add('present');
+            break;
+        case "TL":
+            tile.classList.add('tripleLetter');
+            break;
+        case "DL":
+            tile.classList.add('doubleLetter');
+            break;
+    }
+
+    parent.appendChild(tile);
+    return tile;
+}
+
+let addExampleWord = (w,parent,format) => {
+    let exword = document.createElement('div');
+    exword.className = 'exampleWord';
+    parent.appendChild(exword);
+    format = format.split('-')
+    w.split('').forEach((letter,i)=>{
+        let tile = addExampleTile(letter,exword,format[i]);
+    })
+    return exword;
+}
+
+let addExample = (w,parent,format,text) =>{
+    addExampleWord(w,parent,format);
+
+    let p = document.createElement('p');
+    p.innerText = text;
+    parent.appendChild(p);
+}
+
 let showInnerWindow = (innerhtml) =>{
-    
+
+    let currWindows = document.getElementsByClassName('innerWindow');
+    if (currWindows.length > 0) {
+        for (let i=0;i<currWindows.length;i++) {
+            currWindows[i].remove();
+        }
+    }
+
+    let innerWindow = document.createElement('div');
+    innerWindow.className = 'innerWindow';
+    let cancelButton = document.createElement('button');
+    cancelButton.className = 'closeWindowButton';
+    cancelButton.innerText = 'X';
+    innerWindow.append(cancelButton);
+    document.getElementById('topbar').append(innerWindow);
+    let htmlContent = document.createElement('div');
+    htmlContent.innerHTML = innerhtml;
+    innerWindow.appendChild(htmlContent);
+
+    cancelButton.addEventListener('click',()=>{
+        innerWindow.remove();
+    })
+
+    // Append TUTORIAL EXAMPLES, format: split by '-' //
+
+    addExample('SEVENTY',innerWindow,'correct- - - - - - ',
+        'S is in the word and in the correct spot'
+    );
+    addExample('OCTOPUS',innerWindow,' -present- - - - - ',
+        'C is in the word but in the wrong spot'
+    );
+    addExample('FORMULA', innerWindow, ' - - - - -absent- ',
+        'L is not in the word in any spot'
+    );
+    addExample('GLAZING',innerWindow, ' - -TL- - - - ',
+        'A is worth 1 * 3 = 3 points as its placed on a triple bonus'
+    );
+    addExample('ORANGES',innerWindow,' - - - -DL- - ',
+        'G is worth 2 * 2 = 4 points as its placed on a double bonus'
+    );
+    addExample('DESTROY',innerWindow, 'correct-correct-correct-correct-correct-correct-correct',
+        'without any bonuses, DESTROY is worth D(2)+E(1)+S(1)+T(1)+R(1)+O(1)+Y(4) = 11 points'
+    )
+
+    return innerWindow;
 }
 
 let showNotification = (message,duration) => {
@@ -79,12 +175,21 @@ let showNotification = (message,duration) => {
     })
 }
 
+const tutorialHTML = `<h1 style='color:white;'>How to Play</h1>
+            <h3 style='color:lightgray'>Guess the Bingo in 6 tries, smells like Scrabble though.</h3>
+            <ul style='color:white;'>
+                <li>Each guess must be a valid 7-letter word</li>
+                <li>The color of the tiles will change to show how close your guess was</li>
+                <li>The sum of points is given as a hint, there may or may not be BONUS SQUARES, which multiply the points of a letter</li>
+            </ul>
+            <h2 style='color:white;'>Examples</h2>`
+
 gameInit = () => {
 
     let keyboardDiv = document.getElementById('keyboard');
 
     let header = document.getElementById('header');
-    header.innerText = 'Sum: ' + totalScore.toString();
+    header.innerText = 'Points: ' + totalScore.toString();
 
     // Initialize Board Tiles //
 
@@ -151,6 +256,10 @@ gameInit = () => {
         }
     })  
 
+    let tutorialButton = document.getElementById('tutorialButton');
+    tutorialButton.addEventListener('click',()=>{
+       showInnerWindow(tutorialHTML);
+    })
 }
 
 let getTile = (r,c) => {
@@ -276,7 +385,7 @@ onAdd = (keyCode) => {
             }
             
         } else (
-            showNotification('Not enough letters!',1.5)
+            showNotification('Not enough letters!',2)
         )
     } else if (keyCode === 'Backspace') {
         if (col > 0) {

@@ -37,7 +37,7 @@ hr {
 .tile {
     /*Box*/
     aspect-ratio: 1 / 1;
-    border:0.25vw solid white;
+    border:min(2px,0.25vw) solid white;
 
     /*Text*/
     color:white;
@@ -69,14 +69,14 @@ hr {
 .doubleLetter {
     background-color: lightskyblue;
     color:white;
-    border-color: blue;
+    border-color: lightblue;
 
 }
 
 .tripleLetter {
     background-color: lightcoral;
     color: white;
-    border-color: red;
+    border-color: lightpink;
  
 }
 
@@ -93,7 +93,7 @@ hr {
 }
 
 .keycap:hover {
-    background-color: lightgreen;
+    background-color: white;
 }
 
 .keyLetter {
@@ -168,11 +168,12 @@ hr {
 .notification {
     background-color: white;
     color: black;
+    z-index: 2;
     font-family: 'Courier New', Courier, monospace;
     font-size: clamp(8px,1.5vw,15px);
     width: clamp(100px, 20vw, 200px); 
     padding: clamp(12px, 2vw, 20px);
-    animation: notificationFade 1.5s ease-in-out forwards;
+    animation: notificationFade 1.5s cubic-bezier(1,.2,1,0) forwards;
 }
 
 #topbar {
@@ -180,5 +181,64 @@ hr {
     height: clamp(20px, 5vh, 70px);
     background-color: green;
     flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
 }
 
+.innerWindow {
+    position: absolute;
+    transform: translate(50%,-50%);
+    width: clamp(280px, 80vw, 600px); 
+    height: clamp(200px,60vh,500px);
+    right: 50%;
+    top: 50%;
+    background-color: darkslategray;
+    z-index: 3;
+    border-radius: 3%;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    padding:10px;
+    box-shadow: black 5px 5px;
+    font-family: monospace;
+    text-align: left;
+    overflow:scroll;
+}
+
+.closeWindowButton {
+    color:white;
+    font-family: sans-serif;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    font-size: clamp(16px,5vw,32px);
+    text-align: right;
+}
+
+.closeWindowButton:hover {
+    color:black;
+}
+
+h1,h2,h3,h4,li{
+    padding: 0;
+    margin: 0;
+}
+
+#tutorialButton {
+    background-color: transparent;
+    border:none;
+    color:white;
+    font-size: clamp(16px,5vw,32px);
+    font-weight: bold;
+}
+
+#tutorialButton:hover {
+    color: black;
+}
+
+.exampleWord {
+    display: flex;
+    justify-content: left;
+    gap:1px;
+}
