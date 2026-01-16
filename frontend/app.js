@@ -6,7 +6,7 @@ let bonusSq = '-TD--';
 
 let gameEnd = false;
 
-const loadTime = 0;
+const loadTime = 2;
 
 let row = 0;    // CURRENT ROW AND COL //
 let col = 0;
@@ -197,8 +197,11 @@ async function loadScreen(){
     const topbar = document.getElementById('topbar');
     topbar.append(loadingscreen);
 
+    const funText = ['Shuffling tiles, hang on for ','Drawing letters, give us ', 'Board nearly set-up, just wait ']
+    const ranFunText = funText[Math.floor(Math.random()*funText.length)];
+
     for (let i = loadTime; i > 0; i--) {
-        loadingtext.innerText = 'Load complete in ' + i;
+        loadingtext.innerText = ranFunText + i + 's...';
         await sleep(1000);
     }
 
@@ -235,6 +238,8 @@ async function gameInit (){
 
     let tutorialWindow = initTutorialWindow(tutorialHTML);
 
+    let tilesList = [];
+
     // Initialize Board Tiles //
 
     for (let r=0;r<height;r++){
@@ -253,8 +258,16 @@ async function gameInit (){
             }
 
             document.getElementById('board').appendChild(tile);
+            tilesList.push(tile);
         }
     }
+
+    // Play a starting flip anim for tiles after loading just for looks //
+    setTimeout(()=>{
+        tilesList.forEach((t)=>{
+            flipAnim(t,null);
+        })
+    },loadTime*1000);
 
     // Initialize the Keyboard //
     let currAlphabetNo = 0;
@@ -331,14 +344,14 @@ let addWord = (letter) => {
     if (bonusSq[col] === 'D') {
         tile.classList.replace('doubleLetter',null);
         tile.innerText = '';
-        keyNum.style.color = 'cyan';
-        keyLetter.style.color = 'cyan';
+        keyNum.style.color = '#ADD8E6';
+        keyLetter.style.color = '#ADD8E6';
         keyNum.innerText = (Number(keyNum.innerText) * 2).toString();
     } else if (bonusSq[col] === 'T') {
         tile.classList.replace('tripleLetter',null);
         tile.innerText = '';
-        keyNum.style.color = 'rgb(255, 67, 67)';
-        keyLetter.style.color = 'rgb(255, 67, 67)';
+        keyNum.style.color = '#00AEEF';
+        keyLetter.style.color = '#00AEEF';
         keyNum.innerText = (Number(keyNum.innerText) * 3).toString();
     }
 
@@ -362,6 +375,28 @@ let rmWord = () => {
 
 }
 
+async function winEffects() {
+    for (let i=0;i<width;i++){
+        const tile = getTile(row,i);
+        tile.classList.add('spinning');
+        setTimeout(()=>{
+            tile.classList.remove('spinning');
+            
+        },1200);
+    }
+    showNotification('No. 1 Victory Royale!!',2);
+}
+
+async function flipAnim(tile,finalClass){
+    tile.classList.add('flipping');
+    setTimeout(()=>{
+        tile.classList.add(finalClass);
+    },300);
+    setTimeout(()=>{
+        tile.classList.remove('flipping');
+    },600);
+}
+
 let letterIgnoreList = [];
 // a list of absent letters, used to ignore input for target keys //
 
@@ -379,9 +414,7 @@ let checkWord = () => {
         return
     }
 
-    for (let n=0;n<width;n++){
-        getTile(row,n).classList.add('absent');
-    }
+    let hintPattern = new Array(5).fill('absent');
 
     let presentLetters = [];
 
@@ -390,16 +423,19 @@ let checkWord = () => {
             if (word[i] === wordOnTiles[j]) {
                 if (i == j) {
                     corrCnt += 1;
-                    getTile(row,j).classList.replace('absent','correct');
-                    getTile(row,j).classList.replace('present','correct');
+                    hintPattern[j] = 'correct';
                 } else {
-                    getTile(row,j).classList.replace('absent','present');
+                    hintPattern[j] = 'present';
                 }
                 if (presentLetters.includes(wordOnTiles[j]) == false) {
                     presentLetters += [wordOnTiles[j]];
                 }
             }
         }
+    }
+
+    for (let i=0;i<width;i++) {
+        flipAnim(getTile(row,i),hintPattern[i]);
     }
 
     // Using presentLetters, blacken FAILED keys for better readability //
@@ -415,6 +451,8 @@ let checkWord = () => {
     })
 
     if (corrCnt == width) {
+        // Victory Effects!! //
+        winEffects();
         return 'Win';
     } else {
         return 'Cont';
@@ -428,7 +466,7 @@ document.addEventListener('keyup',(event)=>{
 })
 
 onAdd = (keyCode) => {
-    if (gameEnd | letterIgnoreList.includes(keyCode[3])) return;
+    if (gameEnd) return;
     
     if ("KeyA" <= keyCode && "KeyZ" >= keyCode) {
         if (col < width) {
