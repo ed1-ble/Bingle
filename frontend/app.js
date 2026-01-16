@@ -1,10 +1,12 @@
 let height = 6;
-let width = 7;
+let width = 5;
 
-let word = 'EDITORS';
-let bonusSq = '-TD--D-';
+let word = 'WHICH';
+let bonusSq = '-TD--';
 
 let gameEnd = false;
+
+const loadTime = 0;
 
 let row = 0;    // CURRENT ROW AND COL //
 let col = 0;
@@ -184,7 +186,6 @@ let sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve,ms));
 }
 
-const loadTime = 3;
 
 // Prevent weird looks before loading finishes by adding load countdown//
 async function loadScreen(){
@@ -206,7 +207,7 @@ async function loadScreen(){
 
 // Preload the word list //
 async function getWordList(){
-    const url = 'https://ed1-ble.github.io/Bingle/services/7L-words.txt';
+    const url = 'https://ed1-ble.github.io/Bingle/services/words.txt';
     return fetch(url)
         .then(response => {return response.text()})
         .then(result =>{return result.split('\n');})
@@ -230,7 +231,7 @@ async function gameInit (){
     let keyboardDiv = document.getElementById('keyboard');
 
     let header = document.getElementById('header');
-    header.innerText = 'Points: ' + totalScore.toString();
+    header.innerText = `Word score: ` + totalScore.toString();
 
     let tutorialWindow = initTutorialWindow(tutorialHTML);
 
