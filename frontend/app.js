@@ -1,7 +1,7 @@
-let height = 6;
+let height = 4;
 let width = 5;
 
-let word = 'WHICH';
+let word = 'ADIEU';
 let bonusSq = '-TD--';
 
 let gameEnd = false;
@@ -90,7 +90,7 @@ let addExampleTile = (text,parent,type) =>{
         case "DL":
             tile.classList.add('doubleLetter');
             break;
-    }
+   4}
 
     parent.appendChild(tile);
     return tile;
@@ -137,23 +137,23 @@ let initTutorialWindow = (innerhtml) =>{
 
     // Append TUTORIAL EXAMPLES, format: split by '-' //
 
-    addExample('SEVENTY',innerWindow,'correct- - - - - - ',
+    addExample('SCRAP',innerWindow,'correct- - - - ',
         'S is in the word and in the correct spot'
     );
-    addExample('OCTOPUS',innerWindow,' -present- - - - - ',
-        'C is in the word but in the wrong spot'
+    addExample('WORDY',innerWindow,' -present- - - ',
+        'O is in the word but in the wrong spot'
     );
-    addExample('FORMULA', innerWindow, ' - - - - -absent- ',
-        'L is not in the word in any spot'
+    addExample('LIGHT', innerWindow, ' - - -absent- ',
+        'H is not in the word in any spot'
     );
-    addExample('GLAZING',innerWindow, ' - -TL- - - - ',
+    addExample('GLAZE',innerWindow, ' - -TL- - ',
         'A is worth 1 * 3 = 3 points as its placed on a triple bonus'
     );
-    addExample('ORANGES',innerWindow,' - - - -DL- - ',
-        'G is worth 2 * 2 = 4 points as its placed on a double bonus'
+    addExample('GOOFY',innerWindow,' - - - -DL',
+        'Y is worth 4 * 2 = 8 points as its placed on a double bonus'
     );
-    addExample('DESTROY',innerWindow, 'correct-correct-correct-correct-correct-correct-correct',
-        'without any bonuses, DESTROY is worth D(2)+E(1)+S(1)+T(1)+R(1)+O(1)+Y(4) = 11 points'
+    addExample('FAILS',innerWindow, 'correct-correct-correct-correct-correct-correct-correct',
+        'without any bonuses, FAILS is worth F(4) + A(1) + I(1) + L(1) + S(1) = 8 points'
     )
 
     return innerWindow;
@@ -173,9 +173,9 @@ let showNotification = (message,duration) => {
 }
 
 const tutorialHTML = `<h1 style='color:white;'>How to Play</h1>
-            <h3 style='color:lightgray'>Guess the Bingo in 6 tries, smells like Scrabble though.</h3>
+            <h3 style='color:lightgray'>Guess the word in 6 tries, smells like Scrabble though.</h3>
             <ul style='color:white;'>
-                <li>Each guess must be a valid 7-letter word</li>
+                <li>Each guess must be a valid 5-letter word</li>
                 <li>The color of the tiles will change to show how close your guess was</li>
                 <li>The sum of points is given as a hint, there may or may not be BONUS SQUARES, which multiply the points of a letter</li>
             </ul>
@@ -207,7 +207,7 @@ async function loadScreen(){
 
 // Preload the word list //
 async function getWordList(){
-    const url = 'https://ed1-ble.github.io/Bingle/services/words.txt';
+    const url = 'https://ed1-ble.github.io/Numdle/services/words.txt';
     return fetch(url)
         .then(response => {return response.text()})
         .then(result =>{return result.split('\n');})
@@ -325,20 +325,20 @@ let addWord = (letter) => {
 
     keyNum.className = 'keyNum';
     keyNum.innerText = scrabPTS[letter].toString();
-    keyNum.style.fontSize = 'min(10px,2.5vw)';
+    keyNum.style.fontSize = 'clamp(8px,1.5vw,15px)';
 
     // Modification for Bonus Squares //
     if (bonusSq[col] === 'D') {
         tile.classList.replace('doubleLetter',null);
         tile.innerText = '';
-        keyNum.style.color = 'lightskyblue';
-        keyLetter.style.color = 'lightskyblue';
+        keyNum.style.color = 'cyan';
+        keyLetter.style.color = 'cyan';
         keyNum.innerText = (Number(keyNum.innerText) * 2).toString();
     } else if (bonusSq[col] === 'T') {
         tile.classList.replace('tripleLetter',null);
         tile.innerText = '';
-        keyNum.style.color = 'lightcoral';
-        keyLetter.style.color = 'lightcoral';
+        keyNum.style.color = 'rgb(255, 67, 67)';
+        keyLetter.style.color = 'rgb(255, 67, 67)';
         keyNum.innerText = (Number(keyNum.innerText) * 3).toString();
     }
 
