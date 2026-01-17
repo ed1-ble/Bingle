@@ -235,6 +235,7 @@ async function gameInit (){
     try {
         word = await getTodaysWord();
         word = word.toUpperCase();
+        console.log(word);
     } catch (err){console.error(err.message)}
 
     wordList;
