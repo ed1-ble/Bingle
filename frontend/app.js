@@ -173,9 +173,9 @@ let showNotification = (message,duration) => {
 }
 
 const tutorialHTML = `<h1 style='color:white;'>How to Play</h1>
-            <h3 style='color:lightgray'>Guess the word in 6 tries, smells like Scrabble though.</h3>
+            <h3 style='color:lightgray'>Guess the word in ${height} tries, smells like Scrabble though.</h3>
             <ul style='color:white;'>
-                <li>Each guess must be a valid 5-letter word</li>
+                <li>Each guess must be a valid ${width}-letter word</li>
                 <li>The color of the tiles will change to show how close your guess was</li>
                 <li>The sum of points is given as a hint, there may or may not be BONUS SQUARES, which multiply the points of a letter</li>
             </ul>
@@ -210,7 +210,7 @@ async function loadScreen(){
 
 // Preload the word list //
 async function getWordList(){
-    const url = 'https://ed1-ble.github.io/Numdle/services/words.txt';
+    const url = 'https://ed1-ble.github.io/Numdle/words.txt';
     return fetch(url)
         .then(response => {return response.text()})
         .then(result =>{return result.split('\n');})
@@ -327,6 +327,8 @@ let getTile = (r,c) => {
     return tile;
 }
 
+const arrowChar = '⇆';
+
 let addWord = (letter) => {
     tile = getTile(row,col);
     let keyNum = document.createElement('span');
@@ -346,13 +348,15 @@ let addWord = (letter) => {
         tile.innerText = '';
         keyNum.style.color = '#ADD8E6';
         keyLetter.style.color = '#ADD8E6';
-        keyNum.innerText = (Number(keyNum.innerText) * 2).toString();
+        keyNum.innerText = `${keyNum.innerText}${arrowChar}`;
+     //   keyNum.innerText = (Number(keyNum.innerText) * 2).toString(); //
     } else if (bonusSq[col] === 'T') {
         tile.classList.replace('tripleLetter',null);
         tile.innerText = '';
         keyNum.style.color = '#00AEEF';
         keyLetter.style.color = '#00AEEF';
-        keyNum.innerText = (Number(keyNum.innerText) * 3).toString();
+        keyNum.innerText = `${keyNum.innerText}${arrowChar}`;
+     //   keyNum.innerText = (Number(keyNum.innerText) * 3).toString(); //
     }
 
     tile.appendChild(keyLetter);
