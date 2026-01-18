@@ -13,6 +13,7 @@ Game Link: https://ed1-ble.github.io/Numdle/
 ![Features](numdlePracMode.png)
 
 - Practise mode for, well, practising.
+- Press ⇆ to switch to practise mode! 
 - BTW, Press '?' for a little guide!
 
 ## Tech Stack 🛠
